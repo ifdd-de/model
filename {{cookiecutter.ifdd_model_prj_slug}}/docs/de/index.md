@@ -28,14 +28,23 @@ Skip-Liste von cruft; alles andere kommt aus dem Template.
 
 ## Architektur
 
-```{mermaid}
-flowchart LR
-  Src[src/linkml] --> Base[output/base]
-  Base -->|just compare| Ref[(tests/reference)]
-  Base -->|URLs aus .env| Out[output/schema, type, unit]
-  Out -->|just publish| Content[(Content-Repos)]
-  Content --> Services[Dienste schema, type, unit]
-  Src --> Docs[output/docs]
+```{uml}
+@startuml
+left to right direction
+  rectangle "src/linkml" as Src
+  rectangle "output/base" as Base
+  Src --> Base
+  database "tests/reference" as Ref
+  Base --> Ref : just compare
+  rectangle "output/schema, type, unit" as Out
+  Base --> Out : URLs aus .env
+  database "Content-Repos" as Content
+  Out --> Content : just publish
+  rectangle "Dienste schema, type, unit" as Services
+  Content --> Services
+  rectangle "output/docs" as Docs
+  Src --> Docs
+@enduml
 ```
 
 | Wer | Nutzt dieses Repo für |
