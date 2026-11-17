@@ -1,0 +1,150 @@
+# LinkML source of the namespace https://type/v1/base/
+# Generates: schema/json-ld/v1/base.jsonld (JSON-LD context), type/json-ld/v1/base/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/base/
+name: base
+title: Base
+description: 'Values every object has: overview tables of the UI.'
+version: 0.10.0
+in_language: en
+annotations:
+  title_de: Basis
+  description_de: 'Werte, die jedes Objekt hat: Übersichtstabellen der UI.'
+prefixes:
+  linkml: https://w3id.org/linkml/
+  base: https://type/v1/base/
+  schema: http://schema.org/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+default_prefix: base
+default_range: string
+imports:
+- linkml:types
+classes:
+  Base:
+    class_uri: base:schema
+    title: Base
+    description: Base Schema
+    annotations:
+      title_de: Basis
+    attributes:
+      aspect:
+        slot_uri: base:aspect
+        title: Aspect
+        description: 'Kind of object: product, function, location or organisation.'
+        rank: 70
+        annotations:
+          title_de: Aspekt
+          description_de: 'Art des Objekts: Produkt, Funktion, Ort oder Organisation.'
+      objType:
+        slot_uri: base:objType
+        title: Type
+        description: Type of the object as the source names it.
+        rank: 80
+        annotations:
+          title_de: Typ
+          description_de: Typ des Objekts, wie die Quelle ihn nennt.
+      objScope:
+        slot_uri: base:objScope
+        title: Scope
+        description: Free label for telling objects apart in a client; not used for access.
+        rank: 90
+        annotations:
+          title_de: Bereich
+          description_de: Freie Kennzeichnung zur Unterscheidung im Client; nicht für Rechte genutzt.
+      objName:
+        slot_uri: base:objName
+        title: Name
+        description: Name of the object in this context.
+        rank: 100
+        annotations:
+          title_de: Name
+          description_de: Name des Objekts in diesem Context.
+      description:
+        slot_uri: base:description
+        title: Description
+        description: Short description.
+        rank: 110
+        annotations:
+          title_de: Beschreibung
+          description_de: Kurze Beschreibung.
+      tags:
+        slot_uri: base:tags
+        title: Tags
+        description: Free keywords.
+        rank: 120
+        annotations:
+          title_de: Schlagworte
+          description_de: Freie Schlagworte.
+      origin:
+        slot_uri: base:origin
+        title: Origin
+        description: Source system the values of this context come from.
+        rank: 130
+        annotations:
+          title_de: Herkunft
+          description_de: Quellsystem, aus dem die Werte dieses Contexts stammen.
+      publisher:
+        slot_uri: base:publisher
+        title: Publisher
+        description: Who publishes the values of this context.
+        rank: 140
+        multivalued: true
+        annotations:
+          title_de: Herausgeber
+          description_de: Wer die Werte dieses Contexts veröffentlicht.
+      c_created:
+        slot_uri: base:c_created
+        title: Created (source)
+        description: When the source created the object.
+        rank: 901
+        range: datetime
+        annotations:
+          title_de: Angelegt (Quelle)
+          description_de: Wann die Quelle das Objekt angelegt hat.
+      c_modified:
+        slot_uri: base:c_modified
+        title: Modified (source)
+        description: When the source last changed the object.
+        rank: 902
+        range: datetime
+        annotations:
+          title_de: Geändert (Quelle)
+          description_de: Wann die Quelle das Objekt zuletzt geändert hat.
+      c_cacheCreated:
+        slot_uri: base:c_cacheCreated
+        title: First stored
+        description: When the backend first stored the object (set by the backend).
+        rank: 903
+        range: datetime
+        annotations:
+          title_de: Erstmals gespeichert
+          description_de: Wann das Backend das Objekt erstmals gespeichert hat (vom Backend gesetzt).
+      c_cacheUpdated:
+        slot_uri: base:c_cacheUpdated
+        title: Last confirmed
+        description: When the backend last stored or confirmed this version (set by the backend).
+        rank: 904
+        range: datetime
+        annotations:
+          title_de: Zuletzt bestätigt
+          description_de: Wann das Backend diese Version zuletzt gespeichert oder bestätigt hat (vom Backend
+            gesetzt).
+      c_validNotBefore:
+        slot_uri: base:c_validNotBefore
+        title: Valid from
+        description: Start of the valid time of this version.
+        rank: 905
+        range: datetime
+        annotations:
+          title_de: Gültig ab
+          description_de: Beginn der Gültigkeit dieser Version.
+      c_validNotAfter:
+        slot_uri: base:c_validNotAfter
+        title: Valid until
+        description: End of the valid time of this version (exclusive).
+        rank: 906
+        range: datetime
+        annotations:
+          title_de: Gültig bis
+          description_de: Ende der Gültigkeit dieser Version (ausschließlich).

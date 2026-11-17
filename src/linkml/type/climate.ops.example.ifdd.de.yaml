@@ -1,0 +1,46 @@
+# LinkML source of the namespace https://type/v1/climate.ops.example.ifdd.de/
+# Generates: type/json-ld/v1/climate.ops.example.ifdd.de/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/climate.ops.example.ifdd.de/
+name: climate.ops.example.ifdd.de
+title: Climate
+description: 'Simplified example of a vocabulary for time series: ambient conditions at an object, written
+  through ts-api into two stores.'
+in_language: en
+annotations:
+  title_de: Klima
+  description_de: 'Vereinfachtes Beispiel eines Vokabulars für Zeitreihen: Umgebungsbedingungen an einem
+    Objekt, über ts-api in zwei Stores geschrieben.'
+prefixes:
+  linkml: https://w3id.org/linkml/
+  climate: https://type/v1/climate.ops.example.ifdd.de/
+  xsd: http://www.w3.org/2001/XMLSchema#
+default_prefix: climate
+default_range: string
+imports:
+- linkml:types
+slots:
+  temperature:
+    slot_uri: climate:temperature
+    title: Temperature
+    description: Ambient temperature at the object. The bounds are an example.
+    rank: 100
+    minimum_value: -50
+    maximum_value: 100
+    annotations:
+      title_de: Temperatur
+      description_de: Umgebungstemperatur am Objekt. Die Grenzen sind ein Beispiel.
+      quantity_kind: https://unit/v1/quantitykind/Temperature
+      applicable_units: https://unit/v1/unit/DEG_C
+  relativeHumidity:
+    slot_uri: climate:relativeHumidity
+    title: Relative humidity
+    description: Relative humidity of the air at the object.
+    rank: 110
+    minimum_value: 0
+    maximum_value: 100
+    annotations:
+      title_de: Relative Luftfeuchte
+      description_de: Relative Feuchte der Luft am Objekt.
+      quantity_kind: https://unit/v1/quantitykind/RelativeHumidity
+      applicable_units: https://unit/v1/unit/PERCENT_RH

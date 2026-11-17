@@ -1,0 +1,299 @@
+# LinkML source of the namespace https://type/v1/product/
+# Generates: schema/json-ld/v1/product.jsonld (JSON-LD context), type/json-ld/v1/product/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/product/
+name: product
+title: Product
+description: 'Values of products: devices, systems, software.'
+version: 0.10.0
+in_language: en
+annotations:
+  title_de: Produkt
+  description_de: 'Werte von Produkten: Geräte, Anlagen, Software.'
+prefixes:
+  linkml: https://w3id.org/linkml/
+  product: https://type/v1/product/
+  schema: http://schema.org/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+default_prefix: product
+default_range: string
+imports:
+- linkml:types
+classes:
+  Product:
+    class_uri: product:schema
+    title: Product
+    description: Product Schema
+    annotations:
+      title_de: Produkt
+    attributes:
+      uuid:
+        slot_uri: product:uuid
+        title: UUID
+        description: Identifier of the object in its source.
+        rank: 10
+        annotations:
+          title_de: UUID
+          description_de: Kennung des Objekts in seiner Quelle.
+      serial_number:
+        slot_uri: product:serial_number
+        title: Serial number
+        description: Serial number given by the manufacturer.
+        rank: 20
+        annotations:
+          title_de: Seriennummer
+          description_de: Seriennummer des Herstellers.
+      equipment_numbers:
+        slot_uri: product:equipment_numbers
+        title: Equipment numbers
+        description: Equipment numbers in maintenance systems.
+        rank: 30
+        annotations:
+          title_de: Equipmentnummern
+          description_de: Equipmentnummern in Instandhaltungssystemen.
+      vendor:
+        slot_uri: product:vendor
+        title: Vendor
+        description: Company that supplied the product.
+        rank: 40
+        annotations:
+          title_de: Lieferant
+          description_de: Unternehmen, das das Produkt geliefert hat.
+      manufacturer:
+        slot_uri: product:manufacturer
+        title: Manufacturer
+        description: Company that made the product.
+        rank: 50
+        annotations:
+          title_de: Hersteller
+          description_de: Unternehmen, das das Produkt hergestellt hat.
+      objType:
+        slot_uri: product:objType
+        title: Type
+        description: Type of the object as the source names it.
+        rank: 120
+        annotations:
+          title_de: Typ
+          description_de: Typ des Objekts, wie die Quelle ihn nennt.
+      objScope:
+        slot_uri: product:objScope
+        title: Scope
+        description: Free label for telling objects apart in a client; not used for access.
+        rank: 130
+        annotations:
+          title_de: Bereich
+          description_de: Freie Kennzeichnung zur Unterscheidung im Client; nicht für Rechte genutzt.
+      objName:
+        slot_uri: product:objName
+        title: Name
+        description: Name of the object in this context.
+        rank: 140
+        annotations:
+          title_de: Name
+          description_de: Name des Objekts in diesem Context.
+      description:
+        slot_uri: product:description
+        title: Description
+        description: Short description.
+        rank: 150
+        annotations:
+          title_de: Beschreibung
+          description_de: Kurze Beschreibung.
+      isPartOf:
+        slot_uri: product:isPartOf
+        title: Part of
+        description: The object this one is a part of.
+        rank: 160
+        range: Product
+        annotations:
+          title_de: Teil von
+          description_de: Das Objekt, zu dem dieses gehört.
+      hasPart:
+        slot_uri: product:hasPart
+        title: Has parts
+        description: The parts of this object.
+        rank: 170
+        range: Product
+        multivalued: true
+        annotations:
+          title_de: Besteht aus
+          description_de: Die Teile dieses Objekts.
+      providesFunction:
+        slot_uri: product:providesFunction
+        title: Provides function
+        description: Functions this object provides.
+        rank: 180
+        range: Function
+        multivalued: true
+        annotations:
+          title_de: Stellt Funktion bereit
+          description_de: Funktionen, die dieses Objekt bereitstellt.
+      implementedBy:
+        slot_uri: product:implementedBy
+        title: Implemented by
+        description: Products that implement this object.
+        rank: 190
+        range: uriorcurie
+        annotations:
+          title_de: Umgesetzt durch
+          description_de: Produkte, die dieses Objekt umsetzen.
+      usesFunction:
+        slot_uri: product:usesFunction
+        title: Uses function
+        description: Functions this object uses.
+        rank: 200
+        range: Function
+        multivalued: true
+        annotations:
+          title_de: Nutzt Funktion
+          description_de: Funktionen, die dieses Objekt nutzt.
+      usedBy:
+        slot_uri: product:usedBy
+        title: Used by
+        description: Objects that use this one.
+        rank: 210
+        range: uriorcurie
+        multivalued: true
+        annotations:
+          title_de: Genutzt von
+          description_de: Objekte, die dieses nutzen.
+      responsibleOrganisation:
+        slot_uri: product:responsibleOrganisation
+        title: Responsible organisation
+        description: Organisation responsible for this object.
+        rank: 220
+        range: Organisation
+        annotations:
+          title_de: Verantwortliche Organisation
+          description_de: Für dieses Objekt verantwortliche Organisation.
+      containedIn:
+        slot_uri: product:containedIn
+        title: Located in
+        description: Location the product is in.
+        rank: 230
+        range: Location
+        annotations:
+          title_de: Befindet sich in
+          description_de: Ort, an dem sich das Produkt befindet.
+      tags:
+        slot_uri: product:tags
+        title: Tags
+        description: Free keywords.
+        rank: 240
+        annotations:
+          title_de: Schlagworte
+          description_de: Freie Schlagworte.
+      origin:
+        slot_uri: product:origin
+        title: Origin
+        description: Source system the values of this context come from.
+        rank: 250
+        annotations:
+          title_de: Herkunft
+          description_de: Quellsystem, aus dem die Werte dieses Contexts stammen.
+      publisher:
+        slot_uri: product:publisher
+        title: Publisher
+        description: Who publishes the values of this context.
+        rank: 260
+        annotations:
+          title_de: Herausgeber
+          description_de: Wer die Werte dieses Contexts veröffentlicht.
+      properties:
+        slot_uri: product:properties
+        title: Properties
+        description: Further properties as id, value and validity.
+        rank: 270
+        multivalued: true
+        annotations:
+          title_de: Eigenschaften
+          description_de: Weitere Eigenschaften als Kennung, Wert und Gültigkeit.
+      prop_id:
+        slot_uri: product:prop_id
+        title: Property
+        description: Identifier of a property.
+        rank: 280
+        annotations:
+          title_de: Eigenschaft
+          description_de: Kennung einer Eigenschaft.
+      prop_val:
+        slot_uri: product:prop_val
+        title: Value
+        description: Value of a property.
+        rank: 290
+        annotations:
+          title_de: Wert
+          description_de: Wert einer Eigenschaft.
+      prop_validity:
+        slot_uri: product:prop_validity
+        title: Validity
+        description: Validity of a property value.
+        rank: 300
+        annotations:
+          title_de: Gültigkeit
+          description_de: Gültigkeit eines Eigenschaftswerts.
+      c_created:
+        slot_uri: product:c_created
+        title: Created (source)
+        description: When the source created the object.
+        rank: 906
+        range: datetime
+        annotations:
+          title_de: Angelegt (Quelle)
+          description_de: Wann die Quelle das Objekt angelegt hat.
+      c_modified:
+        slot_uri: product:c_modified
+        title: Modified (source)
+        description: When the source last changed the object.
+        rank: 907
+        range: datetime
+        annotations:
+          title_de: Geändert (Quelle)
+          description_de: Wann die Quelle das Objekt zuletzt geändert hat.
+      c_cacheCreated:
+        slot_uri: product:c_cacheCreated
+        title: First stored
+        description: When the backend first stored the object (set by the backend).
+        rank: 908
+        range: datetime
+        annotations:
+          title_de: Erstmals gespeichert
+          description_de: Wann das Backend das Objekt erstmals gespeichert hat (vom Backend gesetzt).
+      c_cacheUpdated:
+        slot_uri: product:c_cacheUpdated
+        title: Last confirmed
+        description: When the backend last stored or confirmed this version (set by the backend).
+        rank: 909
+        range: datetime
+        annotations:
+          title_de: Zuletzt bestätigt
+          description_de: Wann das Backend diese Version zuletzt gespeichert oder bestätigt hat (vom Backend
+            gesetzt).
+      c_validNotBefore:
+        slot_uri: product:c_validNotBefore
+        title: Valid from
+        description: Start of the valid time of this version.
+        rank: 910
+        range: datetime
+        annotations:
+          title_de: Gültig ab
+          description_de: Beginn der Gültigkeit dieser Version.
+      c_validNotAfter:
+        slot_uri: product:c_validNotAfter
+        title: Valid until
+        description: End of the valid time of this version (exclusive).
+        rank: 911
+        range: datetime
+        annotations:
+          title_de: Gültig bis
+          description_de: Ende der Gültigkeit dieser Version (ausschließlich).
+  Function:
+    class_uri: https://type/v1/function/schema
+    description: Reference target in another namespace. Only its URI is used; its terms are defined there.
+  Location:
+    class_uri: https://type/v1/location/schema
+    description: Reference target in another namespace. Only its URI is used; its terms are defined there.
+  Organisation:
+    class_uri: https://type/v1/organisation/schema
+    description: Reference target in another namespace. Only its URI is used; its terms are defined there.

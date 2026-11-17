@@ -1,0 +1,12 @@
+# linkml-lint configuration.
+# - standard_naming: term names (objType, serialNumber, KiloV, ...) are part
+#   of the published JSON-LD contexts and vocabularies.
+# - canonical_prefixes: the prefixes product:, location:, unit: ... are the
+#   aliases of the own namespaces in the published contexts; they are not the
+#   registry prefixes of unrelated vocabularies.
+extends: recommended
+rules:
+  standard_naming:
+    level: disabled
+  canonical_prefixes:
+    level: disabled

@@ -1,0 +1,166 @@
+# LinkML source of the namespace https://type/v1/maintenance.ops.example.ifdd.de/
+# Generates: schema/json-ld/v1/maintenance.ops.example.ifdd.de.jsonld (JSON-LD context), type/json-ld/v1/maintenance.ops.example.ifdd.de/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/maintenance.ops.example.ifdd.de/
+name: maintenance.ops.example.ifdd.de
+title: Maintenance
+description: 'Simplified example of a second domain context: maintenance data.'
+version: 0.1.0
+in_language: en
+annotations:
+  title_de: Wartung
+  description_de: 'Vereinfachtes Beispiel eines zweiten Domänen-Contexts: Wartungsdaten.'
+prefixes:
+  linkml: https://w3id.org/linkml/
+  maintenance: https://type/v1/maintenance.ops.example.ifdd.de/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  qudt: http://qudt.org/schema/qudt/
+default_prefix: maintenance
+default_range: string
+imports:
+- linkml:types
+types:
+  duration:
+    uri: xsd:duration
+    base: str
+    typeof: string
+    description: An ISO 8601 duration (xsd:duration), e.g. P1Y.
+classes:
+  Maintenance:
+    class_uri: maintenance:schema
+    title: Maintenance
+    description: 'Example domain context: maintenance data (simplified)'
+    annotations:
+      title_de: Wartung
+    attributes:
+      objType:
+        slot_uri: maintenance:objType
+        title: Type
+        description: Type of the object as the source names it.
+        rank: 10
+        annotations:
+          title_de: Typ
+          description_de: Typ des Objekts, wie die Quelle ihn nennt.
+      objScope:
+        slot_uri: maintenance:objScope
+        title: Scope
+        description: Free label for telling objects apart in a client; not used for access.
+        rank: 20
+        annotations:
+          title_de: Bereich
+          description_de: Freie Kennzeichnung zur Unterscheidung im Client; nicht für Rechte genutzt.
+      objName:
+        slot_uri: maintenance:objName
+        title: Name
+        description: Name of the object in this context.
+        rank: 30
+        annotations:
+          title_de: Name
+          description_de: Name des Objekts in diesem Context.
+      origin:
+        slot_uri: maintenance:origin
+        title: Origin
+        description: Source system the values of this context come from.
+        rank: 40
+        annotations:
+          title_de: Herkunft
+          description_de: Quellsystem, aus dem die Werte dieses Contexts stammen.
+      publisher:
+        slot_uri: maintenance:publisher
+        title: Publisher
+        description: Who publishes the values of this context.
+        rank: 50
+        annotations:
+          title_de: Herausgeber
+          description_de: Wer die Werte dieses Contexts veröffentlicht.
+      maintenanceInterval:
+        slot_uri: maintenance:maintenanceInterval
+        title: Maintenance interval
+        description: Time between two inspections (ISO 8601 duration).
+        rank: 120
+        range: duration
+        annotations:
+          title_de: Wartungsintervall
+          description_de: Zeit zwischen zwei Prüfungen (ISO-8601-Dauer).
+      lastInspection:
+        slot_uri: maintenance:lastInspection
+        title: Last inspection
+        description: Date of the last inspection.
+        rank: 130
+        range: date
+        annotations:
+          title_de: Letzte Prüfung
+          description_de: Datum der letzten Prüfung.
+      nextInspection:
+        slot_uri: maintenance:nextInspection
+        title: Next inspection
+        description: Date of the next planned inspection.
+        rank: 140
+        range: date
+        annotations:
+          title_de: Nächste Prüfung
+          description_de: Datum der nächsten geplanten Prüfung.
+      condition:
+        slot_uri: maintenance:condition
+        title: Condition
+        description: Condition found at the last inspection.
+        rank: 150
+        annotations:
+          title_de: Zustand
+          description_de: Bei der letzten Prüfung festgestellter Zustand.
+      c_created:
+        slot_uri: maintenance:c_created
+        title: Created (source)
+        description: When the source created the object.
+        rank: 906
+        range: datetime
+        annotations:
+          title_de: Angelegt (Quelle)
+          description_de: Wann die Quelle das Objekt angelegt hat.
+      c_modified:
+        slot_uri: maintenance:c_modified
+        title: Modified (source)
+        description: When the source last changed the object.
+        rank: 907
+        range: datetime
+        annotations:
+          title_de: Geändert (Quelle)
+          description_de: Wann die Quelle das Objekt zuletzt geändert hat.
+      c_cacheCreated:
+        slot_uri: maintenance:c_cacheCreated
+        title: First stored
+        description: When the backend first stored the object (set by the backend).
+        rank: 908
+        range: datetime
+        annotations:
+          title_de: Erstmals gespeichert
+          description_de: Wann das Backend das Objekt erstmals gespeichert hat (vom Backend gesetzt).
+      c_cacheUpdated:
+        slot_uri: maintenance:c_cacheUpdated
+        title: Last confirmed
+        description: When the backend last stored or confirmed this version (set by the backend).
+        rank: 909
+        range: datetime
+        annotations:
+          title_de: Zuletzt bestätigt
+          description_de: Wann das Backend diese Version zuletzt gespeichert oder bestätigt hat (vom Backend
+            gesetzt).
+      c_validNotBefore:
+        slot_uri: maintenance:c_validNotBefore
+        title: Valid from
+        description: Start of the valid time of this version.
+        rank: 910
+        range: datetime
+        annotations:
+          title_de: Gültig ab
+          description_de: Beginn der Gültigkeit dieser Version.
+      c_validNotAfter:
+        slot_uri: maintenance:c_validNotAfter
+        title: Valid until
+        description: End of the valid time of this version (exclusive).
+        rank: 911
+        range: datetime
+        annotations:
+          title_de: Gültig bis
+          description_de: Ende der Gültigkeit dieser Version (ausschließlich).

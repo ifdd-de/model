@@ -1,0 +1,206 @@
+# LinkML source of the namespace https://type/v1/location/
+# Generates: schema/json-ld/v1/location.jsonld (JSON-LD context), type/json-ld/v1/location/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/location/
+name: location
+title: Location
+description: Values of locations.
+version: 0.10.0
+in_language: en
+annotations:
+  title_de: Ort
+  description_de: Werte von Orten.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  location: https://type/v1/location/
+  schema: http://schema.org/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+default_prefix: location
+default_range: string
+imports:
+- linkml:types
+classes:
+  Location:
+    class_uri: location:schema
+    title: Location
+    description: Location Schema
+    annotations:
+      title_de: Ort
+    attributes:
+      objType:
+        slot_uri: location:objType
+        title: Type
+        description: Type of the object as the source names it.
+        rank: 70
+        annotations:
+          title_de: Typ
+          description_de: Typ des Objekts, wie die Quelle ihn nennt.
+      objScope:
+        slot_uri: location:objScope
+        title: Scope
+        description: Free label for telling objects apart in a client; not used for access.
+        rank: 80
+        annotations:
+          title_de: Bereich
+          description_de: Freie Kennzeichnung zur Unterscheidung im Client; nicht für Rechte genutzt.
+      objName:
+        slot_uri: location:objName
+        title: Name
+        description: Name of the object in this context.
+        rank: 90
+        annotations:
+          title_de: Name
+          description_de: Name des Objekts in diesem Context.
+      description:
+        slot_uri: location:description
+        title: Description
+        description: Short description.
+        rank: 100
+        annotations:
+          title_de: Beschreibung
+          description_de: Kurze Beschreibung.
+      isPartOf:
+        slot_uri: location:isPartOf
+        title: Part of
+        description: The object this one is a part of.
+        rank: 110
+        range: Location
+        annotations:
+          title_de: Teil von
+          description_de: Das Objekt, zu dem dieses gehört.
+      hasPart:
+        slot_uri: location:hasPart
+        title: Has parts
+        description: The parts of this object.
+        rank: 120
+        range: Location
+        multivalued: true
+        annotations:
+          title_de: Besteht aus
+          description_de: Die Teile dieses Objekts.
+      containsProduct:
+        slot_uri: location:containsProduct
+        title: Contains products
+        description: Products at this location.
+        rank: 130
+        range: Product
+        multivalued: true
+        annotations:
+          title_de: Enthält Produkte
+          description_de: Produkte an diesem Ort.
+      tags:
+        slot_uri: location:tags
+        title: Tags
+        description: Free keywords.
+        rank: 140
+        annotations:
+          title_de: Schlagworte
+          description_de: Freie Schlagworte.
+      origin:
+        slot_uri: location:origin
+        title: Origin
+        description: Source system the values of this context come from.
+        rank: 150
+        annotations:
+          title_de: Herkunft
+          description_de: Quellsystem, aus dem die Werte dieses Contexts stammen.
+      publisher:
+        slot_uri: location:publisher
+        title: Publisher
+        description: Who publishes the values of this context.
+        rank: 160
+        annotations:
+          title_de: Herausgeber
+          description_de: Wer die Werte dieses Contexts veröffentlicht.
+      properties:
+        slot_uri: location:properties
+        title: Properties
+        description: Further properties as id, value and validity.
+        rank: 170
+        multivalued: true
+        annotations:
+          title_de: Eigenschaften
+          description_de: Weitere Eigenschaften als Kennung, Wert und Gültigkeit.
+      prop_id:
+        slot_uri: location:prop_id
+        title: Property
+        description: Identifier of a property.
+        rank: 180
+        annotations:
+          title_de: Eigenschaft
+          description_de: Kennung einer Eigenschaft.
+      prop_val:
+        slot_uri: location:prop_val
+        title: Value
+        description: Value of a property.
+        rank: 190
+        annotations:
+          title_de: Wert
+          description_de: Wert einer Eigenschaft.
+      prop_validity:
+        slot_uri: location:prop_validity
+        title: Validity
+        description: Validity of a property value.
+        rank: 200
+        annotations:
+          title_de: Gültigkeit
+          description_de: Gültigkeit eines Eigenschaftswerts.
+      c_created:
+        slot_uri: location:c_created
+        title: Created (source)
+        description: When the source created the object.
+        rank: 901
+        range: datetime
+        annotations:
+          title_de: Angelegt (Quelle)
+          description_de: Wann die Quelle das Objekt angelegt hat.
+      c_modified:
+        slot_uri: location:c_modified
+        title: Modified (source)
+        description: When the source last changed the object.
+        rank: 902
+        range: datetime
+        annotations:
+          title_de: Geändert (Quelle)
+          description_de: Wann die Quelle das Objekt zuletzt geändert hat.
+      c_cacheCreated:
+        slot_uri: location:c_cacheCreated
+        title: First stored
+        description: When the backend first stored the object (set by the backend).
+        rank: 903
+        range: datetime
+        annotations:
+          title_de: Erstmals gespeichert
+          description_de: Wann das Backend das Objekt erstmals gespeichert hat (vom Backend gesetzt).
+      c_cacheUpdated:
+        slot_uri: location:c_cacheUpdated
+        title: Last confirmed
+        description: When the backend last stored or confirmed this version (set by the backend).
+        rank: 904
+        range: datetime
+        annotations:
+          title_de: Zuletzt bestätigt
+          description_de: Wann das Backend diese Version zuletzt gespeichert oder bestätigt hat (vom Backend
+            gesetzt).
+      c_validNotBefore:
+        slot_uri: location:c_validNotBefore
+        title: Valid from
+        description: Start of the valid time of this version.
+        rank: 905
+        range: datetime
+        annotations:
+          title_de: Gültig ab
+          description_de: Beginn der Gültigkeit dieser Version.
+      c_validNotAfter:
+        slot_uri: location:c_validNotAfter
+        title: Valid until
+        description: End of the valid time of this version (exclusive).
+        rank: 906
+        range: datetime
+        annotations:
+          title_de: Gültig bis
+          description_de: Ende der Gültigkeit dieser Version (ausschließlich).
+  Product:
+    class_uri: https://type/v1/product/schema
+    description: Reference target in another namespace. Only its URI is used; its terms are defined there.

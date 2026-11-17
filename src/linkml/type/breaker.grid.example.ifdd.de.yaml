@@ -1,0 +1,191 @@
+# LinkML source of the namespace https://type/v1/breaker.grid.example.ifdd.de/
+# Generates: schema/json-ld/v1/breaker.grid.example.ifdd.de.jsonld (JSON-LD context), type/json-ld/v1/breaker.grid.example.ifdd.de/index.jsonld (vocabulary), docs.
+
+id: https://type/v1/breaker.grid.example.ifdd.de/
+name: breaker.grid.example.ifdd.de
+title: Circuit breaker
+description: 'Simplified example of a domain context: circuit breakers of a grid operator.'
+version: 0.1.0
+in_language: en
+annotations:
+  title_de: Leistungsschalter
+  description_de: 'Vereinfachtes Beispiel eines Domänen-Contexts: Leistungsschalter eines Netzbetreibers.'
+prefixes:
+  linkml: https://w3id.org/linkml/
+  breaker: https://type/v1/breaker.grid.example.ifdd.de/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  qudt: http://qudt.org/schema/qudt/
+default_prefix: breaker
+default_range: string
+imports:
+- linkml:types
+types:
+  gyear:
+    uri: xsd:gYear
+    base: str
+    typeof: string
+    description: A Gregorian calendar year (xsd:gYear), e.g. 2015.
+classes:
+  Breaker:
+    class_uri: breaker:schema
+    title: Circuit breaker
+    description: 'Example domain context: circuit breakers (simplified)'
+    annotations:
+      title_de: Leistungsschalter
+    attributes:
+      objType:
+        slot_uri: breaker:objType
+        title: Type
+        description: Type of the object as the source names it.
+        rank: 10
+        annotations:
+          title_de: Typ
+          description_de: Typ des Objekts, wie die Quelle ihn nennt.
+      objScope:
+        slot_uri: breaker:objScope
+        title: Scope
+        description: Free label for telling objects apart in a client; not used for access.
+        rank: 20
+        annotations:
+          title_de: Bereich
+          description_de: Freie Kennzeichnung zur Unterscheidung im Client; nicht für Rechte genutzt.
+      objName:
+        slot_uri: breaker:objName
+        title: Name
+        description: Name of the object in this context.
+        rank: 30
+        annotations:
+          title_de: Name
+          description_de: Name des Objekts in diesem Context.
+      origin:
+        slot_uri: breaker:origin
+        title: Origin
+        description: Source system the values of this context come from.
+        rank: 40
+        annotations:
+          title_de: Herkunft
+          description_de: Quellsystem, aus dem die Werte dieses Contexts stammen.
+      publisher:
+        slot_uri: breaker:publisher
+        title: Publisher
+        description: Who publishes the values of this context.
+        rank: 50
+        annotations:
+          title_de: Herausgeber
+          description_de: Wer die Werte dieses Contexts veröffentlicht.
+      serialNumber:
+        slot_uri: breaker:serialNumber
+        title: Serial number
+        description: Serial number on the rating plate.
+        rank: 120
+        annotations:
+          title_de: Fabriknummer
+          description_de: Fabriknummer laut Typschild.
+      manufacturer:
+        slot_uri: breaker:manufacturer
+        title: Manufacturer
+        description: Company that made the product.
+        rank: 130
+        annotations:
+          title_de: Hersteller
+          description_de: Unternehmen, das das Produkt hergestellt hat.
+      yearOfManufacture:
+        slot_uri: breaker:yearOfManufacture
+        title: Year of manufacture
+        description: Year the breaker was built.
+        rank: 140
+        range: gyear
+        annotations:
+          title_de: Baujahr
+          description_de: Jahr, in dem der Schalter gebaut wurde.
+      ratedVoltage:
+        slot_uri: breaker:ratedVoltage
+        title: Rated voltage
+        description: Rated voltage of the breaker.
+        rank: 150
+        range: QuantityValue
+        inlined: true
+        annotations:
+          title_de: Bemessungsspannung
+          description_de: Bemessungsspannung des Schalters.
+          quantity_kind: https://unit/v1/quantitykind/Voltage
+          applicable_units: https://unit/v1/unit/KiloV https://unit/v1/unit/V
+      ratedCurrent:
+        slot_uri: breaker:ratedCurrent
+        title: Rated current
+        description: Rated normal current of the breaker.
+        rank: 160
+        range: QuantityValue
+        inlined: true
+        annotations:
+          title_de: Bemessungsstrom
+          description_de: Bemessungs-Betriebsstrom des Schalters.
+          quantity_kind: https://unit/v1/quantitykind/ElectricCurrent
+          applicable_units: https://unit/v1/unit/A https://unit/v1/unit/KiloA
+      operatingMechanism:
+        slot_uri: breaker:operatingMechanism
+        title: Operating mechanism
+        description: Kind of operating mechanism, e.g. spring or hydraulic.
+        rank: 170
+        annotations:
+          title_de: Antrieb
+          description_de: Art des Antriebs, z. B. Feder oder Hydraulik.
+      c_created:
+        slot_uri: breaker:c_created
+        title: Created (source)
+        description: When the source created the object.
+        rank: 906
+        range: datetime
+        annotations:
+          title_de: Angelegt (Quelle)
+          description_de: Wann die Quelle das Objekt angelegt hat.
+      c_modified:
+        slot_uri: breaker:c_modified
+        title: Modified (source)
+        description: When the source last changed the object.
+        rank: 907
+        range: datetime
+        annotations:
+          title_de: Geändert (Quelle)
+          description_de: Wann die Quelle das Objekt zuletzt geändert hat.
+      c_cacheCreated:
+        slot_uri: breaker:c_cacheCreated
+        title: First stored
+        description: When the backend first stored the object (set by the backend).
+        rank: 908
+        range: datetime
+        annotations:
+          title_de: Erstmals gespeichert
+          description_de: Wann das Backend das Objekt erstmals gespeichert hat (vom Backend gesetzt).
+      c_cacheUpdated:
+        slot_uri: breaker:c_cacheUpdated
+        title: Last confirmed
+        description: When the backend last stored or confirmed this version (set by the backend).
+        rank: 909
+        range: datetime
+        annotations:
+          title_de: Zuletzt bestätigt
+          description_de: Wann das Backend diese Version zuletzt gespeichert oder bestätigt hat (vom Backend
+            gesetzt).
+      c_validNotBefore:
+        slot_uri: breaker:c_validNotBefore
+        title: Valid from
+        description: Start of the valid time of this version.
+        rank: 910
+        range: datetime
+        annotations:
+          title_de: Gültig ab
+          description_de: Beginn der Gültigkeit dieser Version.
+      c_validNotAfter:
+        slot_uri: breaker:c_validNotAfter
+        title: Valid until
+        description: End of the valid time of this version (exclusive).
+        rank: 911
+        range: datetime
+        annotations:
+          title_de: Gültig bis
+          description_de: Ende der Gültigkeit dieser Version (ausschließlich).
+  QuantityValue:
+    class_uri: qudt:QuantityValue
+    description: Reference target in another namespace. Only its URI is used; its terms are defined there.

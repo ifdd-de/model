@@ -1,0 +1,60 @@
+# LinkML source of the namespace https://unit/v1/quantitykind/
+# Generates: unit/json-ld/v1/quantitykind/index.jsonld (vocabulary), docs.
+
+id: https://unit/v1/quantitykind/
+name: quantitykind
+title: Quantity kinds
+description: Physical quantities the units measure; each matches a QUDT quantity kind.
+in_language: en
+annotations:
+  title_de: Größenarten
+  description_de: Physikalische Größen, die die Einheiten messen; jede entspricht einer QUDT-Größenart.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  quantitykind: https://unit/v1/quantitykind/
+  qudt: http://qudt.org/schema/qudt/
+  qk: http://qudt.org/vocab/quantitykind/
+default_prefix: quantitykind
+imports:
+- linkml:types
+enums:
+  QuantityKind:
+    enum_uri: qudt:QuantityKind
+    description: Physical quantities the units measure; each matches a QUDT quantity kind.
+    permissible_values:
+      Voltage:
+        meaning: quantitykind:Voltage
+        title: Voltage
+        description: Difference of electric potential between two points.
+        annotations:
+          title_de: Elektrische Spannung
+          description_de: Unterschied des elektrischen Potentials zwischen zwei Punkten.
+        exact_mappings:
+        - qk:Voltage
+      ElectricCurrent:
+        meaning: quantitykind:ElectricCurrent
+        title: Electric current
+        description: Flow of electric charge per time.
+        annotations:
+          title_de: Elektrische Stromstärke
+          description_de: Fluss elektrischer Ladung pro Zeit.
+        exact_mappings:
+        - qk:ElectricCurrent
+      Temperature:
+        meaning: quantitykind:Temperature
+        title: Temperature
+        description: How warm or cold something is.
+        annotations:
+          title_de: Temperatur
+          description_de: Wie warm oder kalt etwas ist.
+        exact_mappings:
+        - qk:Temperature
+      RelativeHumidity:
+        meaning: quantitykind:RelativeHumidity
+        title: Relative humidity
+        description: Water vapour in the air relative to the most it can hold at that temperature.
+        annotations:
+          title_de: Relative Feuchte
+          description_de: Wasserdampf in der Luft im Verhältnis zum Höchstwert bei dieser Temperatur.
+        exact_mappings:
+        - qk:RelativeHumidity

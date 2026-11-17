@@ -1,0 +1,97 @@
+# LinkML source of the namespace https://unit/v1/unit/
+# Generates: unit/json-ld/v1/unit/index.jsonld (vocabulary), docs.
+
+id: https://unit/v1/unit/
+name: unit
+title: Units
+description: Units of measure used by the vocabularies of this node; each matches a QUDT unit.
+in_language: en
+annotations:
+  title_de: Einheiten
+  description_de: Maßeinheiten der Vokabulare dieses Knotens; jede entspricht einer QUDT-Einheit.
+prefixes:
+  linkml: https://w3id.org/linkml/
+  unit: https://unit/v1/unit/
+  quantitykind: https://unit/v1/quantitykind/
+  qudt: http://qudt.org/schema/qudt/
+  qudtunit: http://qudt.org/vocab/unit/
+default_prefix: unit
+imports:
+- linkml:types
+enums:
+  Unit:
+    enum_uri: qudt:Unit
+    description: Units of measure used by the vocabularies of this node; each matches a QUDT unit.
+    permissible_values:
+      V:
+        meaning: unit:V
+        title: Volt
+        description: SI unit of electric potential difference.
+        annotations:
+          title_de: Volt
+          description_de: SI-Einheit der elektrischen Spannung.
+        unit:
+          symbol: V
+          has_quantity_kind: quantitykind:Voltage
+        exact_mappings:
+        - qudtunit:V
+      KiloV:
+        meaning: unit:KiloV
+        title: Kilovolt
+        description: 1000 volt.
+        annotations:
+          title_de: Kilovolt
+          description_de: 1000 Volt.
+        unit:
+          symbol: kV
+          has_quantity_kind: quantitykind:Voltage
+        exact_mappings:
+        - qudtunit:KiloV
+      A:
+        meaning: unit:A
+        title: Ampere
+        description: SI base unit of electric current.
+        annotations:
+          title_de: Ampere
+          description_de: SI-Basiseinheit der elektrischen Stromstärke.
+        unit:
+          symbol: A
+          has_quantity_kind: quantitykind:ElectricCurrent
+        exact_mappings:
+        - qudtunit:A
+      KiloA:
+        meaning: unit:KiloA
+        title: Kiloampere
+        description: 1000 ampere.
+        annotations:
+          title_de: Kiloampere
+          description_de: 1000 Ampere.
+        unit:
+          symbol: kA
+          has_quantity_kind: quantitykind:ElectricCurrent
+        exact_mappings:
+        - qudtunit:KiloA
+      DEG_C:
+        meaning: unit:DEG_C
+        title: Degree Celsius
+        description: Celsius temperature.
+        annotations:
+          title_de: Grad Celsius
+          description_de: Celsius-Temperatur.
+        unit:
+          symbol: °C
+          has_quantity_kind: quantitykind:Temperature
+        exact_mappings:
+        - qudtunit:DEG_C
+      PERCENT_RH:
+        meaning: unit:PERCENT_RH
+        title: Percent relative humidity
+        description: Relative humidity in percent.
+        annotations:
+          title_de: Prozent relative Feuchte
+          description_de: Relative Feuchte in Prozent.
+        unit:
+          symbol: '%RH'
+          has_quantity_kind: quantitykind:RelativeHumidity
+        exact_mappings:
+        - qudtunit:PERCENT_RH
