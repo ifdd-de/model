@@ -2,7 +2,7 @@
 
 All notable changes to this template are documented in this file.
 
-## [Unreleased]
+## [26.11.1] - 2026-11-14
 
 ### Added
 
