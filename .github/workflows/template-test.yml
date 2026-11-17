@@ -1,0 +1,86 @@
+name: Template
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render, check and build (${{ matrix.fixture }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [defaults, custom]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: template
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install Java and Graphviz (PlantUML)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q default-jre-headless graphviz
+
+      - name: Install tooling
+        run: |
+          pip install cookiecutter
+          pip install -r "template/{{cookiecutter.ifdd_model_prj_slug}}/requirements.txt"
+          pip install -r template/tests/docs/requirements.txt
+
+      - name: Render
+        run: |
+          cookiecutter --no-input --config-file template/tests/fixtures/${{ matrix.fixture }}.yaml \
+            --output-dir rendered template
+          INSTANCE=$(find rendered -mindepth 1 -maxdepth 1 -type d | head -1)
+          echo "INSTANCE=$INSTANCE" >> "$GITHUB_ENV"
+
+      - name: The rendered instance must contain no template placeholders
+        run: |
+          if grep -rl "cookiecutter\." "$INSTANCE"; then
+            echo "Unrendered placeholders found" >&2
+            exit 1
+          fi
+
+      - name: Documentation of the instance (docs/en, docs/de) matches and builds
+        run: python template/tests/check_docs.py "$INSTANCE" --prefix ifdd-model-
+
+      - name: Build (lint, JSON-LD, compare, generated docs and their check)
+        working-directory: ${{ env.INSTANCE }}
+        run: just build
+
+      - name: Tests of the instance
+        working-directory: ${{ env.INSTANCE }}
+        run: just test
+
+  template:
+    name: Template tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install tooling
+        run: |
+          pip install cookiecutter
+          pip install -r "{{cookiecutter.ifdd_model_prj_slug}}/requirements.txt"
+
+      - name: Fixtures, hooks and counter-checks on the examples
+        run: pytest -q tests

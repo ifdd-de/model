@@ -1,0 +1,199 @@
+# Build the IFDD JSON-LD files and docs from the LinkML sources.
+# `just` lists the recipes. Every recipe shows the plain CLI calls it runs,
+# so each step can also be run by hand. Settings come from .env.
+
+set shell := ["bash", "-euo", "pipefail", "-c"]
+set dotenv-load
+
+src := "src/linkml"
+out := "output"
+
+# PlantUML runs locally while building the docs (Java needed, Graphviz for the layout).
+plantuml_version := "1.2026.10"
+plantuml_url := "https://github.com/plantuml/plantuml/releases/download/v" + plantuml_version + "/plantuml-" + plantuml_version + ".jar"
+plantuml_sha256 := "e9bc9e6b2eb715e8c0c929f3dcb5fc1923be13f37599b09c293c66d354e88686"
+plantuml_jar := justfile_directory() / ".cache" / "plantuml-" + plantuml_version + ".jar"
+
+_default:
+    @just --list --unsorted --justfile {{ justfile() }}
+
+# Everything: clean, lint, JSON-LD, compare with the references, docs and their check
+build: clean lint json compare docs check-docs
+
+# Remove the output directory
+clean:
+    rm -rf {{ out }}
+
+# Check the LinkML sources
+lint:
+    linkml-lint --config .linkmllint.yaml {{ src }}
+
+# Generate the JSON-LD files: first with the base URLs, then for the URLs in .env
+json: base relocate
+
+# JSON-LD with the base URLs (output/base): contexts, vocabularies, units
+base: contexts vocabularies units
+
+# JSON-LD contexts (schema service): gen-jsonld-context, then the IFDD post-processing
+contexts:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p {{ out }}/raw {{ out }}/base/schema
+    for f in {{ src }}/type/*.yaml; do
+        name=$(basename "$f" .yaml)
+        if ! python -m ifdd_model.schema has-context "$f"; then
+            echo "skip $name (no class, vocabulary only)"
+            continue
+        fi
+        set -x
+        gen-jsonld-context --log_level ERROR --no-metadata --fix-multivalue-containers --xsd-anyuri-as-iri \
+            "$f" > "{{ out }}/raw/$name.jsonld"
+        python -m ifdd_model.context "$f" "{{ out }}/raw/$name.jsonld" "{{ out }}/base/schema/$name.jsonld"
+        { set +x; } 2>/dev/null
+    done
+
+# Vocabularies (type service)
+vocabularies:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for f in {{ src }}/type/*.yaml; do
+        name=$(basename "$f" .yaml)
+        set -x
+        python -m ifdd_model.vocab "$f" "{{ out }}/base/type/$name/index.jsonld"
+        { set +x; } 2>/dev/null
+    done
+
+# Units and quantity kinds (unit service)
+units:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for f in {{ src }}/unit/*.yaml; do
+        name=$(basename "$f" .yaml)
+        set -x
+        python -m ifdd_model.vocab "$f" "{{ out }}/base/unit/$name/index.jsonld" --units {{ src }}/unit/*.yaml
+        { set +x; } 2>/dev/null
+    done
+
+# Copy output/base to output/<service>/json-ld/<version> with the URLs from .env
+relocate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for service in schema type unit; do
+        path=$(python -m ifdd_model.relocate path "$service")
+        rm -rf "{{ out }}/$service"
+        set -x
+        python -m ifdd_model.relocate copy "{{ out }}/base/$service" "{{ out }}/$service/json-ld/$path"
+        { set +x; } 2>/dev/null
+    done
+
+# Compare output/base with tests/reference by meaning
+compare:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    status=0
+    for ref in $(cd tests/reference && find . -name '*.jsonld' | sort); do
+        rel=${ref#./}
+        gen="{{ out }}/base/$rel"
+        if [ ! -f "$gen" ]; then echo "MISSING $gen"; status=1; continue; fi
+        if python -m ifdd_model.compare "$gen" "tests/reference/$rel"; then
+            echo "same    $gen"
+        else
+            echo "DIFFERS $gen"; status=1
+        fi
+    done
+    for gen in $(cd {{ out }}/base && find . -name '*.jsonld' | sort); do
+        rel=${gen#./}
+        [ -f "tests/reference/$rel" ] || { echo "NO REFERENCE {{ out }}/base/$rel (just accept)"; status=1; }
+    done
+    exit $status
+
+# Take output/base as the new reference (after checking `just compare`)
+accept:
+    rm -rf tests/reference/schema tests/reference/type tests/reference/unit
+    cp -R {{ out }}/base/. tests/reference/
+
+# Run the tests
+test:
+    python -m pytest -q tests
+
+# Download the pinned PlantUML jar into .cache/ and check its SHA-256
+plantuml:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    jar="{{ plantuml_jar }}"
+    if [ ! -f "$jar" ]; then
+        mkdir -p "$(dirname "$jar")"
+        set -x
+        curl -fsSL -o "$jar.part" "{{ plantuml_url }}"
+        { set +x; } 2>/dev/null
+        mv "$jar.part" "$jar"
+    fi
+    python -c 'import hashlib, sys; h = hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest(); sys.exit(0 if h == sys.argv[2] else f"SHA-256 mismatch for {sys.argv[1]}: {h}")' "$jar" "{{ plantuml_sha256 }}"
+    echo "PlantUML {{ plantuml_version }}: $jar"
+
+# MyST pages in English and German, one per namespace (gen-doc with docgen/templates)
+docs-pages:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    rm -rf "{{ out }}/docgen" "{{ out }}/docs/en" "{{ out }}/docs/de"
+    for lang in en de; do
+        pages="{{ out }}/docgen/pages/$lang"
+        mkdir -p "$pages"
+        cp docgen/pages/$lang/*.md "$pages/"
+        for service in type unit; do
+            mkdir -p "$pages/$service"
+            for f in {{ src }}/$service/*.yaml; do
+                name=$(basename "$f" .yaml)
+                tmp="{{ out }}/docgen/raw/$lang/$service/$name"
+                set -x
+                gen-doc --log_level ERROR --dialect myst --template-directory docgen/templates \
+                    --diagram-type plantuml_class_diagram --index-name "ifdd_page_$lang" -d "$tmp" "$f" > /dev/null
+                { set +x; } 2>/dev/null
+                cp "$tmp/ifdd_page_$lang.md" "$pages/$service/$name.md"
+            done
+        done
+        set -x
+        python -m ifdd_model.relocate copy "$pages" "{{ out }}/docs/$lang"
+        { set +x; } 2>/dev/null
+    done
+
+# Sphinx docs in English and German (HTML with PlantUML diagrams)
+docs: docs-pages plantuml
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for lang in en de; do
+        set -x
+        IFDD_PLANTUML_JAR="{{ plantuml_jar }}" sphinx-build -q -W -c docgen -D language=$lang -b html \
+            "{{ out }}/docs/$lang" "{{ out }}/docs/_build/$lang"
+        { set +x; } 2>/dev/null
+    done
+    echo "HTML: {{ out }}/docs/_build/en/index.html, {{ out }}/docs/_build/de/index.html"
+
+# Check the generated docs like the IFDD templates do (same files, labels, headings; sphinx -W)
+check-docs: plantuml
+    IFDD_PLANTUML_JAR="{{ plantuml_jar }}" python tests/check_docs.py {{ out }} --prefix ifdd-model-ns-
+
+# Copy the JSON-LD files into the content directories set in .env (never deletes)
+publish: json
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for service in schema type unit; do
+        var="IFDD_MODEL_$(echo "$service" | tr '[:lower:]' '[:upper:]')_TARGET"
+        target="${!var:-}"
+        if [ -z "$target" ]; then echo "error: $var is not set in .env" >&2; exit 1; fi
+        if [ ! -d "$target" ]; then echo "error: $var=$target is not a directory" >&2; exit 1; fi
+    done
+    for service in schema type unit; do
+        var="IFDD_MODEL_$(echo "$service" | tr '[:lower:]' '[:upper:]')_TARGET"
+        target="${!var}"
+        set -x
+        cp -R "{{ out }}/$service/json-ld/." "$target/"
+        { set +x; } 2>/dev/null
+        extra=$(comm -23 \
+            <(cd "$target" && find . -type f ! -path '*/.*' | sort) \
+            <(cd "{{ out }}/$service/json-ld" && find . -type f | sort))
+        if [ -n "$extra" ]; then
+            echo "$service: files in $target not generated by this repository (left as they are):"
+            echo "$extra" | sed 's/^/  /'
+        fi
+    done

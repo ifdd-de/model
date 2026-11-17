@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install Java and Graphviz (PlantUML)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q default-jre-headless graphviz
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Build (lint, JSON-LD, compare, docs and their check)
+        # .env is git-ignored: the build uses the base URLs here.
+        run: just build
+
+      - name: Tests
+        run: just test
+
+  template:
+    name: Template drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - name: Install cruft
+        run: pip install cruft
+
+      - name: Is this instance behind its template?
+        # Informational: being behind is a decision, not a failure.
+        continue-on-error: true
+        run: cruft check
+
+      - name: How far has this instance drifted from its template?
+        # Everything shown here is a backport candidate: it either belongs
+        # upstream in the template, or the file belongs on the skip list.
+        continue-on-error: true
+        run: cruft diff

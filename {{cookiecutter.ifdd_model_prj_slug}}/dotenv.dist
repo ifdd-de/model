@@ -1,0 +1,18 @@
+# Settings for `just` (loaded with `set dotenv-load`). The post-generation hook
+# copies this file to .env; .env is owned by the instance and never updated by
+# cruft. Variables set in the environment win over .env.
+
+# URLs of the schema, type and unit services, without trailing slash. The
+# LinkML sources use the base URLs https://schema/v1, https://type/v1 and
+# https://unit/v1; `just json` replaces them with these. The path of each URL
+# is also the directory below json-ld/ (https://type/v1 -> json-ld/v1).
+IFDD_MODEL_SCHEMA_URL={{ cookiecutter.ifdd_schema_url }}
+IFDD_MODEL_TYPE_URL={{ cookiecutter.ifdd_type_url }}
+IFDD_MODEL_UNIT_URL={{ cookiecutter.ifdd_unit_url }}
+
+# Content directories of the schema, type and unit content repositories, the
+# directories the services serve (they contain v1/). `just publish` copies
+# the generated files there and never deletes anything. Empty: publish refuses.
+IFDD_MODEL_SCHEMA_TARGET=
+IFDD_MODEL_TYPE_TARGET=
+IFDD_MODEL_UNIT_TARGET=

@@ -1,8 +1,12 @@
-# Sphinx configuration for tests/check_docs.py (a copy of the check of the
-# IFDD templates). It uses exactly the settings of docs/conf.py, so the check
-# builds the pages as `just docs` does. __file__ is set to docs/conf.py so
-# that its relative paths (plantuml.cfg) resolve there.
-from pathlib import Path
+# Sphinx configuration for checking the documentation of a rendered instance
+# (tests/check_docs.py). It is not part of the instance: the documentation
+# is built for real in a separate Sphinx project that copies docs/en and
+# docs/de of every instance.
+project = "IFDD service documentation (check)"
+extensions = ["myst_parser", "sphinxcontrib.mermaid"]
+exclude_patterns = ["_build"]
 
-__file__ = str(Path(__file__).resolve().parents[2] / "docs" / "conf.py")
-exec(Path(__file__).read_text(encoding="utf-8"))  # noqa: S102 - own file in this repository
+# References to other parts of the full documentation (the instance chapter
+# ifdd-instances-*, other services, ifdd-be-core) cannot resolve in a build
+# of one service; check_docs.py checks the references within the service.
+suppress_warnings = ["ref.ref"]

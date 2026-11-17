@@ -1,0 +1,130 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "label": {
+      "@id": "rdfs:label",
+      "@container": "@language"
+    },
+    "comment": {
+      "@id": "rdfs:comment",
+      "@container": "@language"
+    },
+    "range": {
+      "@id": "rdfs:range",
+      "@type": "@id"
+    },
+    "definedBy": {
+      "@id": "rdfs:isDefinedBy",
+      "@type": "@id"
+    },
+    "order": {
+      "@id": "sh:order",
+      "@type": "xsd:integer"
+    },
+    "quantityKind": {
+      "@id": "qudt:hasQuantityKind",
+      "@type": "@id"
+    },
+    "applicableUnit": {
+      "@id": "qudt:applicableUnit",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "symbol": "qudt:symbol",
+    "exactMatch": {
+      "@id": "skos:exactMatch",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "https://unit/v1/quantitykind/",
+      "@type": "owl:Ontology",
+      "label": {
+        "en": "Quantity kinds",
+        "de": "Größenarten"
+      },
+      "comment": {
+        "en": "Physical quantities the units measure; each matches a QUDT quantity kind.",
+        "de": "Physikalische Größen, die die Einheiten messen; jede entspricht einer QUDT-Größenart."
+      }
+    },
+    {
+      "@id": "https://unit/v1/quantitykind/Voltage",
+      "@type": "qudt:QuantityKind",
+      "label": {
+        "en": "Voltage",
+        "de": "Elektrische Spannung"
+      },
+      "comment": {
+        "en": "Difference of electric potential between two points.",
+        "de": "Unterschied des elektrischen Potentials zwischen zwei Punkten."
+      },
+      "applicableUnit": [
+        "https://unit/v1/unit/V",
+        "https://unit/v1/unit/KiloV"
+      ],
+      "exactMatch": "http://qudt.org/vocab/quantitykind/Voltage",
+      "definedBy": "https://unit/v1/quantitykind/"
+    },
+    {
+      "@id": "https://unit/v1/quantitykind/ElectricCurrent",
+      "@type": "qudt:QuantityKind",
+      "label": {
+        "en": "Electric current",
+        "de": "Elektrische Stromstärke"
+      },
+      "comment": {
+        "en": "Flow of electric charge per time.",
+        "de": "Fluss elektrischer Ladung pro Zeit."
+      },
+      "applicableUnit": [
+        "https://unit/v1/unit/A",
+        "https://unit/v1/unit/KiloA"
+      ],
+      "exactMatch": "http://qudt.org/vocab/quantitykind/ElectricCurrent",
+      "definedBy": "https://unit/v1/quantitykind/"
+    },
+    {
+      "@id": "https://unit/v1/quantitykind/Temperature",
+      "@type": "qudt:QuantityKind",
+      "label": {
+        "en": "Temperature",
+        "de": "Temperatur"
+      },
+      "comment": {
+        "en": "How warm or cold something is.",
+        "de": "Wie warm oder kalt etwas ist."
+      },
+      "applicableUnit": [
+        "https://unit/v1/unit/DEG_C"
+      ],
+      "exactMatch": "http://qudt.org/vocab/quantitykind/Temperature",
+      "definedBy": "https://unit/v1/quantitykind/"
+    },
+    {
+      "@id": "https://unit/v1/quantitykind/RelativeHumidity",
+      "@type": "qudt:QuantityKind",
+      "label": {
+        "en": "Relative humidity",
+        "de": "Relative Feuchte"
+      },
+      "comment": {
+        "en": "Water vapour in the air relative to the most it can hold at that temperature.",
+        "de": "Wasserdampf in der Luft im Verhältnis zum Höchstwert bei dieser Temperatur."
+      },
+      "applicableUnit": [
+        "https://unit/v1/unit/PERCENT_RH"
+      ],
+      "exactMatch": "http://qudt.org/vocab/quantitykind/RelativeHumidity",
+      "definedBy": "https://unit/v1/quantitykind/"
+    }
+  ]
+}

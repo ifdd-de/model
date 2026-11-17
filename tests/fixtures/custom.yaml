@@ -1,0 +1,7 @@
+# Every option away from its default.
+default_context:
+  ifdd_model_prj_name: "Example Model"
+  ifdd_model_prj_slug: "example-model"
+  ifdd_schema_url: "https://schema.example.org/v3"
+  ifdd_type_url: "https://type.example.org/v2"
+  ifdd_unit_url: "https://unit.example.org/units/v2"

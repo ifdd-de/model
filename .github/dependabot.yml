@@ -1,0 +1,28 @@
+# Dependabot version updates for model.
+# Security updates are a repository setting and do not depend on this file.
+#
+# Not covered on purpose:
+# - tests/docs/requirements.txt (pinned together for the docs check);
+# - the PlantUML version in the justfile of the instance (with its SHA-256);
+# - workflows of the rendered instance ({{cookiecutter.ifdd_model_prj_slug}}/.github/workflows):
+#   not yet verified that Dependabot scans them there.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: "pip"
+    # Same glob form as the docker entry of ifdd-de/be; not verified for pip.
+    directories:
+      - "/*cookiecutter.ifdd_model_prj_slug*"
+    schedule:
+      interval: "monthly"
+    groups:
+      minor-and-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]

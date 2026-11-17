@@ -1,0 +1,4 @@
+{#- gen-doc index template. The language is the suffix of --index-name
+    (ifdd_page_en, ifdd_page_de); the page itself is page.md.jinja2. -#}
+{%- set lang = gen.index_name.rsplit("_", 1)[-1] -%}
+{% include "page.md.jinja2" %}
