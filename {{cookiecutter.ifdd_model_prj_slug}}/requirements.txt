@@ -4,5 +4,5 @@ PyLD==3.3.0
 pytest==9.2.0
 rust-just==1.59.0
 sphinx==9.2.0
-myst-parser==5.1.0
+myst-parser==5.2.0
 sphinxcontrib-plantuml==0.31
