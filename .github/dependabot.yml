@@ -2,6 +2,8 @@
 # Security updates are a repository setting and do not depend on this file.
 #
 # Not covered on purpose:
+# - the image version in cookiecutter.json (ifdd_nginx_image, rendered into the
+#   compose files; shared with schema, type and unit);
 # - tests/docs/requirements.txt (pinned together for the docs check);
 # - the PlantUML version in the justfile of the instance (with its SHA-256);
 # - workflows of the rendered instance ({{cookiecutter.ifdd_model_prj_slug}}/.github/workflows):

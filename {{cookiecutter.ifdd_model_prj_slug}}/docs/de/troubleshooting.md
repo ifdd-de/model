@@ -13,3 +13,8 @@
 | Sphinx `error while running plantuml` | Java oder Graphviz (`dot`) fehlt |
 | Befunde von `linkml-lint` | die Quelle verletzt eine LinkML-Regel; `.linkmllint.yaml` nennt die abgeschalteten Regeln mit Grund |
 | `terms without rank` | jeder Term braucht einen `rank` (seine Reihenfolge im Vokabular) |
+| `set IFDD_MODEL_CONTENT_DIR in .env` | Produktion braucht das Content-Verzeichnis, siehe {ref}`ifdd-model-setup` |
+| `refers to undefined volume` | `IFDD_MODEL_CONTENT_DIR` ohne führendes `./`, `../` oder `/` |
+| `network {{ cookiecutter.ifdd_proxy_network }} declared as external, but could not be found` | das Netz anlegen oder zuerst den proxy starten |
+| 404 für eine Quelle | dem Pfad fehlt `/v1/`, oder die Datei liegt nicht im Content-Verzeichnis |
+| 403 für eine Quelle | die Datei ist für UID 101 nicht lesbar (`chmod o+r`) |

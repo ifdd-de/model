@@ -14,7 +14,9 @@ This page lists what is not a template variable.
 | `ifdd_model/` | post-processing of the context, vocabulary writer, URL replacement, comparison |
 | `docgen/` | page template for `gen-doc`, Sphinx configuration and index pages of the generated documentation |
 | `justfile` | the build |
-| `dotenv.dist` → `.env` | URLs and content directories |
+| `docker-compose-production.yml`, `docker-compose-development.yml` | the web service |
+| `nginx/default.conf`, `nginx/mime.types` | its configuration |
+| `dotenv.dist` → `.env` | URLs, content directories, settings of the web service |
 | `docs/en`, `docs/de` | this documentation |
 
 ## Settings in `.env`
@@ -25,8 +27,23 @@ This page lists what is not a template variable.
 | `IFDD_MODEL_TYPE_URL` | URL of the type service; replaces `https://type/v1` in all generated files |
 | `IFDD_MODEL_UNIT_URL` | URL of the unit service; replaces `https://unit/v1` |
 | `IFDD_MODEL_SCHEMA_TARGET`, `IFDD_MODEL_TYPE_TARGET`, `IFDD_MODEL_UNIT_TARGET` | content directories for `just publish` |
+| `IFDD_MODEL_HOST` | host name the proxy routes to the web service; required |
+| `IFDD_MODEL_CONTENT_DIR` | directory with the LinkML sources; served below `/v1/` and read by `just`; required in production, empty means `src/linkml` for `just` |
+| `IFDD_MODEL_DEV_PORT` | port on 127.0.0.1 in development |
 
 Unset or empty URLs mean the base URLs.
+
+## Web service
+
+| Path | Answer |
+|---|---|
+| `/v1/<path>` | the file `<path>` of the content directory; `.yaml` as `application/yaml` |
+| `/v1/<directory>/` | a directory listing ({{ "on" if cookiecutter.ifdd_model_autoindex == "y" else "off" }} here) |
+| `/healthz` | `ok`, for the health check |
+| hidden files, everything else | 404 |
+
+Every answer below `/v1/` carries `Access-Control-Allow-Origin: {{ cookiecutter.ifdd_model_cors_origin }}`,
+also on errors; a preflight (`OPTIONS`) answers 204.
 
 ## Output
 

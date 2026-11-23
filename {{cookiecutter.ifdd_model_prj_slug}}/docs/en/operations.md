@@ -22,6 +22,23 @@ has to be generated.
 and unit services, and how long their caches keep the previous files.
 ```
 
+## Web service
+
+```bash
+docker compose -f docker-compose-production.yml up -d
+docker compose -f docker-compose-production.yml ps
+docker compose -f docker-compose-production.yml logs
+docker compose -f docker-compose-production.yml down
+```
+
+The service needs the proxy network at start and nothing else. Its health
+check calls `wget` on `http://127.0.0.1:8080/healthz` every 30 s. New or
+changed sources (`git pull` in the content clone) are served at once; only
+changes to `nginx/` need `docker compose restart`. Clients may keep a
+response for `Cache-Control: max-age` seconds
+({{ cookiecutter.ifdd_model_cache_max_age }} here) and revalidate it with the
+ETag.
+
 ## Template updates
 
 ```shell

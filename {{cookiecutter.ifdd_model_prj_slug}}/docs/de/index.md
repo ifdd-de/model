@@ -4,15 +4,17 @@
 Das Modell einer IFDD-Installation: LinkML-Quellen, eine Datei je
 Namensraum, aus denen die JSON-LD-Contexts des schema-Dienstes, die
 Vokabulare des type-Dienstes und die Einheiten des unit-Dienstes erzeugt
-werden, dazu eine Dokumentation jedes Namensraums. Es läuft kein Dienst: Es
-ist ein Build, der Dateien in die Content-Repos dieser drei Dienste
-schreibt. Dieses Kapitel beschreibt die Instanz
+werden, dazu eine Dokumentation jedes Namensraums. Es ist ein Build, der
+Dateien in die Content-Repos dieser drei Dienste schreibt, und ein kleiner
+Webdienst, der die LinkML-Quellen selbst nur lesend unter `/v1/` ausliefert.
+Dieses Kapitel beschreibt die Instanz
 `{{ cookiecutter.ifdd_model_prj_slug }}`, erzeugt aus dem Template
 `ifdd-de/model`.
 
 | | |
 |---|---|
-| Quellen | `src/linkml/type/*.yaml`, `src/linkml/unit/*.yaml` (gehören der Instanz) |
+| Quellen | `type/*.yaml` und `unit/*.yaml` im Content-Verzeichnis `IFDD_MODEL_CONTENT_DIR` (Vorgabe `{{ cookiecutter.ifdd_model_content_dir }}`; `src/linkml` enthält die Beispiele) |
+| Webdienst | Host `{{ cookiecutter.ifdd_model_host }}` (`IFDD_MODEL_HOST`), die Quellen unter `/v1/` als `application/yaml` |
 | schema-URL | `{{ cookiecutter.ifdd_schema_url }}` (Vorgabe von `IFDD_MODEL_SCHEMA_URL` in `.env`) |
 | type-URL | `{{ cookiecutter.ifdd_type_url }}` (Vorgabe von `IFDD_MODEL_TYPE_URL`) |
 | unit-URL | `{{ cookiecutter.ifdd_unit_url }}` (Vorgabe von `IFDD_MODEL_UNIT_URL`) |
@@ -20,7 +22,8 @@ schreibt. Dieses Kapitel beschreibt die Instanz
 
 ## Was die Instanz enthält
 
-Die LinkML-Quellen mit Beispielen, die Referenzdateien, gegen die der Build
+Die LinkML-Quellen mit Beispielen, den Webdienst (Compose-Dateien und
+`nginx/`), die Referenzdateien, gegen die der Build
 geprüft wird (`tests/reference`), den Build selbst (`justfile`, das
 Python-Paket `ifdd_model`, die Seitenvorlage in `docgen/`), Tests und diese
 Dokumentation. Quellen und Referenzen gehören der Instanz und stehen auf der
@@ -31,7 +34,9 @@ Skip-Liste von cruft; alles andere kommt aus dem Template.
 ```{uml}
 @startuml
 left to right direction
-  rectangle "src/linkml" as Src
+  rectangle "Content-Verzeichnis" as Src
+  rectangle "model-Dienst" as Model
+  Src --> Model : /v1/
   rectangle "output/base" as Base
   Src --> Base
   database "tests/reference" as Ref
@@ -52,6 +57,7 @@ left to right direction
 | Fachleute | Pflege von Termen, Bezeichnungen und Einheiten in den LinkML-Quellen |
 | Betreuer der Installation | Bauen, Prüfen und Veröffentlichen in die Content-Repos |
 | Backend, UI, ct | mittelbar: sie lesen Contexts und Vokabulare aus den Diensten |
+| Nutzer, Notebooks, Werkzeuge | lesen die LinkML-Quellen aus dem model-Dienst |
 
 ```{toctree}
 :maxdepth: 1

@@ -6,6 +6,7 @@ change of a LinkML source, `just json accept` updates them.
 
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 import pytest
@@ -129,3 +130,21 @@ def test_publish_needs_all_targets(tmp_path):
     assert result.returncode != 0
     assert "IFDD_MODEL_TYPE_TARGET is not set" in result.stderr
     assert not any((tmp_path / "schema").iterdir())
+
+
+def test_build_reads_the_content_directory(tmp_path):
+    """IFDD_MODEL_CONTENT_DIR, the directory the web service serves, is also
+    the source of the build; empty means src/linkml."""
+    content = tmp_path / "content"
+    shutil.copytree(SOURCES, content)
+    source = content / "type" / "climate.ops.example.ifdd.de.yaml"
+    text = source.read_text(encoding="utf-8")
+    assert "minimum_value: -50" in text
+    source.write_text(text.replace("minimum_value: -50", "minimum_value: -40", 1), encoding="utf-8")
+    rel = "type/climate.ops.example.ifdd.de/index.jsonld"
+    out = tmp_path / "from-content"
+    just(f"out={out}", "base", env={"IFDD_MODEL_CONTENT_DIR": str(content)})
+    assert compare(load(out / "base" / rel), load(REFERENCE / rel)) != []
+    out = tmp_path / "from-src"
+    just(f"out={out}", "base", env={"IFDD_MODEL_CONTENT_DIR": ""})
+    assert compare(load(out / "base" / rel), load(REFERENCE / rel)) == []

@@ -1,9 +1,11 @@
 # {{ cookiecutter.ifdd_model_prj_name }}
 
-The model of an IFDD installation: LinkML sources in `src/linkml`, one file
-per namespace. The build generates the JSON-LD contexts of the schema
+The model of an IFDD installation: LinkML sources, one file per namespace,
+in the content directory `IFDD_MODEL_CONTENT_DIR` (examples in
+`src/linkml`). The build generates the JSON-LD contexts of the schema
 service, the vocabularies of the type service, the units of the unit service
-and a documentation of every namespace.
+and a documentation of every namespace. A small web service serves the
+sources themselves below `/v1/`.
 
 Generated from the template `ifdd-de/model`.
 
@@ -15,6 +17,7 @@ python3 -m venv .venv
 pip install -r requirements.txt
 just build      # lint, JSON-LD, compare with tests/reference, docs
 just publish    # copy into the content repositories set in .env
+docker compose -f docker-compose-production.yml up -d   # the web service
 ```
 
 Java and Graphviz are needed for the diagrams of the documentation. `just`

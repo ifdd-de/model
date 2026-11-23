@@ -71,6 +71,21 @@ jobs:
         working-directory: ${{ env.INSTANCE }}
         run: just test
 
+      - name: Compose files of the web service are valid
+        working-directory: ${{ env.INSTANCE }}
+        run: |
+          export IFDD_MODEL_CONTENT_DIR=./src/linkml
+          docker compose -f docker-compose-production.yml config --quiet
+          docker compose -f docker-compose-development.yml config --quiet
+
+      - name: Smoke test of the web service, development
+        working-directory: ${{ env.INSTANCE }}
+        run: tests/smoke.sh development
+
+      - name: Smoke test of the web service, production
+        working-directory: ${{ env.INSTANCE }}
+        run: tests/smoke.sh production
+
   template:
     name: Template tests
     runs-on: ubuntu-latest
