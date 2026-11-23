@@ -24,6 +24,22 @@ schema-, type- und unit-Dienste und wie lange deren Caches die vorigen
 Dateien halten.
 ```
 
+## Webdienst
+
+```bash
+docker compose -f docker-compose-production.yml up -d
+docker compose -f docker-compose-production.yml ps
+docker compose -f docker-compose-production.yml logs
+docker compose -f docker-compose-production.yml down
+```
+
+Der Dienst braucht beim Start das proxy-Netz und sonst nichts. Sein
+Health-Check ruft alle 30 s `wget` auf `http://127.0.0.1:8080/healthz` auf.
+Neue oder geänderte Quellen (`git pull` im Content-Klon) liefert er sofort
+aus; nur Änderungen an `nginx/` brauchen `docker compose restart`. Clients
+dürfen eine Antwort `Cache-Control: max-age` Sekunden lang halten (hier
+{{ cookiecutter.ifdd_model_cache_max_age }}) und prüfen sie dann mit dem ETag.
+
 ## Template-Updates
 
 ```shell

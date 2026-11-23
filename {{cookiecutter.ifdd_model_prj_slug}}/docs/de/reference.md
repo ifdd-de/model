@@ -14,7 +14,9 @@ Seite nennt, was keine Template-Variable ist.
 | `ifdd_model/` | Nachschritt des Contexts, Vokabular, URL-Ersetzung, Vergleich |
 | `docgen/` | Seitenvorlage für `gen-doc`, Sphinx-Konfiguration und Übersichtsseiten der erzeugten Doku |
 | `justfile` | der Build |
-| `dotenv.dist` → `.env` | URLs und Content-Verzeichnisse |
+| `docker-compose-production.yml`, `docker-compose-development.yml` | der Webdienst |
+| `nginx/default.conf`, `nginx/mime.types` | seine Konfiguration |
+| `dotenv.dist` → `.env` | URLs, Content-Verzeichnisse, Einstellungen des Webdienstes |
 | `docs/en`, `docs/de` | diese Dokumentation |
 
 ## Einstellungen in `.env`
@@ -25,8 +27,23 @@ Seite nennt, was keine Template-Variable ist.
 | `IFDD_MODEL_TYPE_URL` | URL des type-Dienstes; ersetzt `https://type/v1` in allen erzeugten Dateien |
 | `IFDD_MODEL_UNIT_URL` | URL des unit-Dienstes; ersetzt `https://unit/v1` |
 | `IFDD_MODEL_SCHEMA_TARGET`, `IFDD_MODEL_TYPE_TARGET`, `IFDD_MODEL_UNIT_TARGET` | Content-Verzeichnisse für `just publish` |
+| `IFDD_MODEL_HOST` | Hostname, unter dem der proxy an den Webdienst leitet; Pflicht |
+| `IFDD_MODEL_CONTENT_DIR` | Verzeichnis mit den LinkML-Quellen; unter `/v1/` ausgeliefert und von `just` gelesen; Pflicht in Produktion, leer heißt für `just` `src/linkml` |
+| `IFDD_MODEL_DEV_PORT` | Port auf 127.0.0.1 in der Entwicklung |
 
 Nicht gesetzte oder leere URLs bedeuten die Basis-URLs.
+
+## Webdienst
+
+| Pfad | Antwort |
+|---|---|
+| `/v1/<pfad>` | die Datei `<pfad>` des Content-Verzeichnisses; `.yaml` als `application/yaml` |
+| `/v1/<verzeichnis>/` | eine Verzeichnisliste (hier {{ "an" if cookiecutter.ifdd_model_autoindex == "y" else "aus" }}) |
+| `/healthz` | `ok`, für den Health-Check |
+| versteckte Dateien, alles andere | 404 |
+
+Jede Antwort unter `/v1/` trägt `Access-Control-Allow-Origin: {{ cookiecutter.ifdd_model_cors_origin }}`,
+auch bei Fehlern; ein Preflight (`OPTIONS`) antwortet mit 204.
 
 ## Ausgabe
 

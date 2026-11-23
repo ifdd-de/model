@@ -29,7 +29,8 @@ whose `class_uri` is `<prefix>:schema` in its own namespace.
 
 ## Release
 
-The instance builds no image and no package. A release of the model is a
+The instance builds no image and no package; the web service uses the
+upstream image `{{ cookiecutter.ifdd_nginx_image }}`. A release of the model is a
 commit of the sources and references, followed by `just publish` and commits
 in the content repositories. The versions of the tools are pinned in
 `requirements.txt` and in the `justfile` (PlantUML); Dependabot proposes

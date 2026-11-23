@@ -16,3 +16,18 @@ IFDD_MODEL_UNIT_URL={{ cookiecutter.ifdd_unit_url }}
 IFDD_MODEL_SCHEMA_TARGET=
 IFDD_MODEL_TYPE_TARGET=
 IFDD_MODEL_UNIT_TARGET=
+
+# Web service (docker compose interpolation; nothing reaches the container).
+# Host name under which the proxy routes to this service.
+IFDD_MODEL_HOST={{ cookiecutter.ifdd_model_host }}
+
+# Directory with the LinkML sources (type/, unit/), usually a separate clone
+# of the model content repository. The service serves it below /v1/, and
+# `just` builds from it. Absolute, or relative to this directory and starting
+# with ./ or ../ (without that prefix compose reads the value as a volume name
+# and refuses to start). Empty: `just` uses src/linkml; production refuses to
+# start.
+IFDD_MODEL_CONTENT_DIR={{ cookiecutter.ifdd_model_content_dir }}
+
+# Port on 127.0.0.1 for local development.
+IFDD_MODEL_DEV_PORT={{ cookiecutter.ifdd_model_dev_port }}

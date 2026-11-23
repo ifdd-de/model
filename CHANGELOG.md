@@ -4,6 +4,40 @@ All notable changes to this template are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Web service: the instance serves its LinkML sources read-only below
+  `/v1/` (`/v1/type/<name>.yaml` as `application/yaml`, RFC 9512) with the
+  upstream image `nginx-unprivileged`, like `schema`, `type` and `unit`:
+  compose files for development and production, `nginx/default.conf` and
+  `nginx/mime.types`, CORS on every answer, hidden files never served,
+  nothing outside `/v1/`, `/healthz`. New variables `ifdd_model_host`,
+  `ifdd_model_dev_port`, `ifdd_model_autoindex`, `ifdd_model_cors_origin`,
+  `ifdd_model_cache_max_age`, `ifdd_model_memory_limit`,
+  `ifdd_model_content_dir` and the shared `ifdd_nginx_image`,
+  `ifdd_proxy_network`; new `.env` settings `IFDD_MODEL_HOST`,
+  `IFDD_MODEL_CONTENT_DIR`, `IFDD_MODEL_DEV_PORT`.
+- `IFDD_MODEL_CONTENT_DIR`, usually a clone of the model content repository,
+  is also the source of `just`; unset or empty it is `src/linkml`.
+- Tests of the instance: `tests/test_config.py` (compose and nginx, and
+  nginx itself when installed), `tests/smoke.sh` (the container); the CI of
+  the template checks the compose files and runs both smoke modes.
+
+### Changed
+
+- The pre-generation hook also checks the values of the web service. The
+  slug now allows letters, digits, `_` and `-` only and must not start with
+  a digit or `-` (it names the Traefik router; dots broke the labels).
+
+### Upgrade
+
+- Existing instances: copy `IFDD_MODEL_HOST`, `IFDD_MODEL_CONTENT_DIR` and
+  `IFDD_MODEL_DEV_PORT` from `dotenv.dist` into `.env` by hand (`.env` is on
+  the skip list). Without `IFDD_MODEL_CONTENT_DIR` in `.env` `just` keeps
+  building from `src/linkml`.
+
+### CI
+
 - CI: GitHub Actions pinned to commit SHAs (version as comment),
   `persist-credentials: false` on every checkout; the same in the workflows of
   the instance.

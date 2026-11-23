@@ -11,9 +11,12 @@ LinkML sources, one file per namespace, from which the build generates
 - a Sphinx documentation of every namespace in English and German with
   PlantUML diagrams.
 
-An instance is the model repository of one installation. It runs no
-service: `just publish` copies the generated files into the content
-repositories of `schema`, `type` and `unit`. The template brings the example
+An instance is the model repository of one installation. `just publish`
+copies the generated files into the content repositories of `schema`, `type`
+and `unit`. A small web service (upstream `nginx-unprivileged`, like
+`schema`, `type` and `unit`) serves the LinkML sources themselves, read-only,
+below `/v1/` as `application/yaml`; the sources come from a content
+directory that the build reads as well. The template brings the example
 namespaces of these three templates as LinkML sources; the build reproduces
 their example files.
 
@@ -40,11 +43,22 @@ directories in `.env` of the instance (see its documentation, page "Setup").
 | `ifdd_schema_url` | `http://schema/v1` | URL of the `schema` service; its path is the directory of the contexts below `json-ld/` |
 | `ifdd_type_url` | `http://type/v1` | URL of the `type` service; replaces `https://type/v1` in the generated files |
 | `ifdd_unit_url` | `http://unit/v1` | URL of the `unit` service; replaces `https://unit/v1` |
+| `ifdd_model_host` | `model` | host name the proxy routes to the web service (`IFDD_MODEL_HOST`) |
+| `ifdd_model_dev_port` | `8084` | port on 127.0.0.1 in development (`IFDD_MODEL_DEV_PORT`) |
+| `ifdd_model_autoindex` | `y` | directory listings below `/v1/` |
+| `ifdd_model_cors_origin` | `*` | `Access-Control-Allow-Origin`: `*` or one origin |
+| `ifdd_model_cache_max_age` | `300` | `Cache-Control: max-age` in seconds, `0` for no-cache |
+| `ifdd_model_memory_limit` | `128M` | memory limit of the container in production |
+| `ifdd_model_content_dir` | `./src/linkml` | default of `IFDD_MODEL_CONTENT_DIR`: the directory with the LinkML sources, served and built from |
+| `ifdd_nginx_image` | `nginxinc/nginx-unprivileged:1.30.6-alpine-slim` | image of the web service (shared with `schema`, `type`, `unit`) |
+| `ifdd_proxy_network` | `proxy-net` | external Docker network of the proxy (shared) |
 
 The three URLs are shared with the other templates and have no trailing
 slash. They become the defaults of `IFDD_MODEL_*_URL` in `.env`. The
-pre-generation hook rejects URLs without host or version path and slugs with
-characters other than letters, digits, `.`, `_` and `-`.
+pre-generation hook rejects URLs without host or version path, slugs with
+characters other than letters, digits, `_` and `-` (the slug names the
+Traefik router), and values of the web service that would not work (the
+same rules as in `ifdd-de/schema`).
 
 ## Layout
 
@@ -54,6 +68,7 @@ characters other than letters, digits, `.`, `_` and `-`.
 | `hooks/` | validation before, `.env` after generation |
 | `{{cookiecutter.ifdd_model_prj_slug}}/` | the instance, see its README and documentation |
 | `tests/test_template.py` | renders the fixtures, checks the hooks, and runs counter-checks bound to the example sources |
+| `{{cookiecutter.ifdd_model_prj_slug}}/tests/test_config.py`, `smoke.sh` | the web service: static checks (and nginx itself, when installed), the running container |
 | `tests/check_docs.py`, `tests/docs/` | used by `template-test.yml`: the documentation of the instance |
 | `tests/fixtures/` | `defaults`, `custom` (other slug and URLs, a unit URL with a sub-path) |
 
@@ -87,7 +102,7 @@ same commit; no Jinja syntax in examples; do not write the text
 
 | Workflow | Does |
 |---|---|
-| `template-test.yml` | renders each fixture, checks for leftover placeholders, checks the documentation of the instance, runs `just build` and `just test` in the instance; runs `tests/` of the template |
+| `template-test.yml` | renders each fixture, checks for leftover placeholders, checks the documentation of the instance, runs `just build` and `just test` in the instance, checks the compose files and starts the web service (`tests/smoke.sh`, development and production); runs `tests/` of the template |
 | `template-update-test.yml` | generates from the latest tag, applies the current template with `cruft update`, fails on reject files, builds and tests the updated instance; does nothing while there is no tag |
 
 ## AI assistance

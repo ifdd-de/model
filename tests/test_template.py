@@ -77,6 +77,26 @@ def test_env_is_created_from_the_fixture(instance):
     text = env.read_text()
     for service in ("schema", "type", "unit"):
         assert f"IFDD_MODEL_{service.upper()}_URL={fixture_value(instance, f'ifdd_{service}_url')}\n" in text
+    for name in ("host", "content_dir", "dev_port"):
+        assert f"IFDD_MODEL_{name.upper()}={fixture_value(instance, f'ifdd_model_{name}')}\n" in text
+
+
+def test_web_service_follows_the_fixture(instance):
+    compose = yaml.safe_load((instance / "docker-compose-production.yml").read_text())
+    service = compose["services"]["model"]
+    assert service["image"] == fixture_value(instance, "ifdd_nginx_image")
+    assert compose["networks"]["ext-proxy-net"]["name"] == fixture_value(instance, "ifdd_proxy_network")
+    assert service["deploy"]["resources"]["limits"]["memory"] == fixture_value(instance, "ifdd_model_memory_limit")
+    slug = fixture_value(instance, "ifdd_model_prj_slug")
+    if "{{" in slug:
+        slug = instance.name
+    assert any(label.startswith(f"traefik.http.routers.{slug}.rule=") for label in service["labels"])
+    conf = (instance / "nginx" / "default.conf").read_text()
+    autoindex = "on" if fixture_value(instance, "ifdd_model_autoindex") == "y" else "off"
+    assert f"autoindex {autoindex};" in conf
+    assert f'add_header Access-Control-Allow-Origin "{fixture_value(instance, "ifdd_model_cors_origin")}" always;' in conf
+    dev = yaml.safe_load((instance / "docker-compose-development.yml").read_text())["services"]["model"]
+    assert dev["ports"] == [f"127.0.0.1:${{IFDD_MODEL_DEV_PORT:-{fixture_value(instance, 'ifdd_model_dev_port')}}}:8080"]
 
 
 def test_json_follows_the_urls_of_the_fixture(instance, tmp_path):
@@ -98,6 +118,15 @@ def test_json_follows_the_urls_of_the_fixture(instance, tmp_path):
     "ifdd_type_url=https://type/v1?x=1",
     "ifdd_type_url=https://type/v'1",
     "ifdd_model_prj_slug=with space",
+    "ifdd_model_prj_slug=with.dot",
+    "ifdd_model_host=bad host",
+    "ifdd_model_dev_port=70000",
+    "ifdd_model_autoindex=yes",
+    "ifdd_model_cors_origin=ui.example.org",
+    "ifdd_model_cache_max_age=5m",
+    "ifdd_model_memory_limit=lots",
+    "ifdd_model_content_dir=srv/model-content",
+    "ifdd_proxy_network=-net",
 ])
 def test_hook_rejects_values(tmp_path, value):
     result = render("defaults", tmp_path, value, check=False)

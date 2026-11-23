@@ -29,7 +29,8 @@ einer Klasse, deren `class_uri` im eigenen Namensraum `<präfix>:schema` ist.
 
 ## Freigabe
 
-Die Instanz baut kein Image und kein Paket. Eine Freigabe des Modells ist ein
+Die Instanz baut kein Image und kein Paket; der Webdienst nutzt das
+Upstream-Image `{{ cookiecutter.ifdd_nginx_image }}`. Eine Freigabe des Modells ist ein
 Commit der Quellen und Referenzen, danach `just publish` und Commits in den
 Content-Repos. Die Versionen der Werkzeuge stehen in `requirements.txt` und
 im `justfile` (PlantUML); Dependabot schlägt Updates der Python-Pakete vor.

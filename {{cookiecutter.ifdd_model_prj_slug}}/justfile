@@ -5,7 +5,9 @@
 set shell := ["bash", "-euo", "pipefail", "-c"]
 set dotenv-load
 
-src := "src/linkml"
+# LinkML sources: IFDD_MODEL_CONTENT_DIR from .env (the directory the web
+# service serves), src/linkml when it is unset or empty.
+src := if env_var_or_default("IFDD_MODEL_CONTENT_DIR", "") == "" { "src/linkml" } else { env_var("IFDD_MODEL_CONTENT_DIR") }
 out := "output"
 
 # PlantUML runs locally while building the docs (Java needed, Graphviz for the layout).

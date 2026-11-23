@@ -17,7 +17,7 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-SETTINGS = ("SCHEMA_URL", "TYPE_URL", "UNIT_URL", "SCHEMA_TARGET", "TYPE_TARGET", "UNIT_TARGET")
+SETTINGS = ("SCHEMA_URL", "TYPE_URL", "UNIT_URL", "SCHEMA_TARGET", "TYPE_TARGET", "UNIT_TARGET", "CONTENT_DIR")
 
 
 def just(*args: str, env: dict[str, str] | None = None, check: bool = True) -> subprocess.CompletedProcess:
