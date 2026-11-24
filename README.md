@@ -50,7 +50,7 @@ directories in `.env` of the instance (see its documentation, page "Setup").
 | `ifdd_model_cache_max_age` | `300` | `Cache-Control: max-age` in seconds, `0` for no-cache |
 | `ifdd_model_memory_limit` | `128M` | memory limit of the container in production |
 | `ifdd_model_content_dir` | `./src/linkml` | default of `IFDD_MODEL_CONTENT_DIR`: the directory with the LinkML sources, served and built from |
-| `ifdd_nginx_image` | `nginxinc/nginx-unprivileged:1.30.6-alpine-slim` | image of the web service (shared with `schema`, `type`, `unit`) |
+| `ifdd_nginx_image` | `nginx/nginx-unprivileged:1.30.8-alpine-slim` | image of the web service (shared with `schema`, `type`, `unit`) |
 | `ifdd_proxy_network` | `proxy-net` | external Docker network of the proxy (shared) |
 
 The three URLs are shared with the other templates and have no trailing
