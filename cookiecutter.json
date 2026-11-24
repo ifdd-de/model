@@ -11,7 +11,7 @@
   "ifdd_model_cache_max_age": "300",
   "ifdd_model_memory_limit": "128M",
   "ifdd_model_content_dir": "./src/linkml",
-  "ifdd_nginx_image": "nginxinc/nginx-unprivileged:1.30.6-alpine-slim",
+  "ifdd_nginx_image": "nginx/nginx-unprivileged:1.30.8-alpine-slim",
   "ifdd_proxy_network": "proxy-net",
   "_copy_without_render": [
     ".github",

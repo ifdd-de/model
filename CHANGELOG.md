@@ -2,7 +2,16 @@
 
 All notable changes to this template are documented in this file.
 
-## [Unreleased]
+## [26.11.11] - 2026-11-24
+
+### Version
+
+- Version aligned across all ifdd-de repositories (26.11.11); this section
+  also covers the web service tagged as v26.11.6.
+- `ifdd_nginx_image` `nginx/nginx-unprivileged:1.30.8-alpine-slim` (was
+  `nginxinc/nginx-unprivileged:1.30.6-alpine-slim`, stable branch). The image
+  moved to the Docker Hub namespace `nginx`; `nginxinc` gets no newer releases
+  (README of nginx/docker-nginx-unprivileged).
 
 ### Added
 
